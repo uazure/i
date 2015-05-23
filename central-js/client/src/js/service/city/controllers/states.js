@@ -48,6 +48,7 @@ define('state/service/city/controller', ['angularAMD'], function (angularAMD) {
 			$scope.$watchCollection('data.city', function(newValue, oldValue) {
 				return (newValue == null) ? null: $scope.step2();
 			});
+
 		}
 	]);
 });

@@ -75,3 +75,7 @@ module.exports.getRegionCities = function (regionId)  {
         return regions['aCity'];
     }
 }
+
+module.exports.getPlaces = function ()  {
+    return myCache.get(cacheKey);
+}

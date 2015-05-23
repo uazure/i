@@ -22,6 +22,12 @@ define('service/service', ['angularAMD'], function (angularAMD) {
 				return response.data;
 			});
 		};
+		// FIXME: getPlaces is obsoleted and MUST be removed (also from server)
+		this.getPlaces = function() {
+			return $http.get('./api/places').then(function(response) {
+				return response.data;
+			});
+		};
 		this.getRegions = function() {
 			return $http.get('./api/places/regions').then(function(response) {
 				return response.data;

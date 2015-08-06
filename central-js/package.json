@@ -26,7 +26,14 @@
     "passport": "~0.2.0",
     "passport-oauth2": "1.1.2",
     "errorhandler": "~1.0.0",
-    "compression": "~1.0.1"
+    "compression": "~1.0.1",
+    "pad-stdio": "~2.0.0",
+    "dargs": "~4.0.1",
+    "ansi-regex": "~2.0.0",
+    "win-spawn": "~2.0.0",
+    "postcss": "~4.1.16",
+    "autoprefixer-core": "~5.2.1",
+    "diff": "~1.4.0"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
@@ -58,7 +65,7 @@
     "grunt-karma": "~0.8.2",
     "grunt-build-control": "DaftMonk/grunt-build-control",
     "grunt-mocha-test": "~0.10.2",
-    "grunt-contrib-sass": "^0.7.3",
+    "grunt-contrib-sass": "~0.9.2",
     "jit-grunt": "^0.5.0",
     "time-grunt": "~0.3.1",
     "grunt-express-server": "~0.4.17",
@@ -89,14 +96,14 @@
     "grunt-node-version": "1.0.0",
     "mout": "0.11.0",
     "wordwrap": "0.0.3",
-    "concat-map":"0.0.1",
-    "balanced-match":"0.2.0",
-    "core-util-is":"1.0.1",
-    "inherits":"2.0.1",
-    "isarray":"0.0.1",
-    "string_decoder":"0.10.31",
+    "concat-map": "0.0.1",
+    "balanced-match": "0.2.0",
+    "core-util-is": "1.0.1",
+    "inherits": "2.0.1",
+    "isarray": "0.0.1",
+    "string_decoder": "0.10.31",
     "lodash": "3.8.0",
-    "chalk":"1.1.0"
+    "chalk": "1.1.0"
   },
   "engines": {
     "node": ">=0.10.25"

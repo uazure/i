@@ -1,17 +1,17 @@
-/* This simple filter service should be used to store user input for filtering
+/* This simple service should be used to store user input for filtering
 anything on the site and to share that input between different pages/states
 */
 angular.module('app').service('userInputSaveService', [function () {
   var userInput = '';
   var userInputSaveService = {
-    setFilter: function(filterText) {
+    save: function(filterText) {
       console.log('set filter', filterText);
       userInput = filterText;
     },
-    resetFilter: function() {
+    reset: function() {
       userInput = '';
     },
-    getFilter: function() {
+    restore: function() {
       return userInput;
     }
   };

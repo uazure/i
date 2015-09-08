@@ -2,43 +2,32 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
     function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, eventListService) {
   
   $scope.catalog = [];
-  eventListService.subscribe('catalog:update', function(data) {
-    $scope.catalog = data;
-    if ($scope.catalog && $scope.catalog.length > 0) {
-      $scope.spinner = false;  
-    }
-  }, false);
-
-  $scope.data = {region: null, city: null};
-
   $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
   $scope.limit = 4;
   $scope.bAdmin = AdminService.isAdmin();
   $scope.recalcCounts = true;
-  $scope.operators = [];
-  
-  
   $scope.spinner = true;
 
+  var subscriptions = [];
+  var subscriberId = eventListService.subscribe('catalog:update', function(data) {
+    $scope.spinner = false;
+    $scope.catalog = data;
+    // TODO: move other handlers here, like update counters, etc
+  }, false);
+  subscriptions.push(subscriberId)
   
 
-
-
-  $scope.filterByStatus = function(status) {
-    $scope.selectedStatus = status;
-    var ctlg = copyCatalog();
-    angular.forEach(ctlg, function(item) {
-      angular.forEach(item.aSubcategory, function(subItem) {
-        subItem.aService = $filter('filter')(subItem.aService, {nStatus: status});
-      });
+  subscriberId = eventListService.subscribe('catalog:updatePending', function() {
+    $scope.spinner = true;
+  });
+  subscriptions.push(subscriberId);
+  $scope.$on('$destroy', function() {
+    subscriptions.forEach(function(item) {
+      eventListService.unsubscribe(item);
     });
+  })
 
-    $scope.recalcCounts = false;
-    $scope.catalog = ctlg;
-  };
-
-  
-
+//TODO: move this code to eventList event handler
   $scope.$watch('catalog', function(newValue) {
     console.log('service.controller catalog changed');
     $timeout(function() {
@@ -84,10 +73,4 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
       $scope.recalcCounts = true;
     });
   });
-
-  $scope.$watch('selectedStatus', function(newValue, oldValue) {
-    if ((newValue == 2 || oldValue == 2) && $scope.data.region !== null)
-      $scope.search();
-  });
-
 }]);

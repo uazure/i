@@ -7,9 +7,11 @@
         </div>
 
         <div class="row">
-            <h3 class="subcategory_title">{{category.sName}}: {{subcategory.sName}}</h3>
+            <h3 class="subcategory_title">{{categoryName}}: {{subcategoryName}}</h3>
         </div>
-        {{ subcategory.aService.length }}
+        <div class="text-center" ng-show="spinner">
+          <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading" />
+        </div>
         <div class="col-md-4" ng-repeat="service in subcategory.aService | orderBy: '-nSub' ">
             <ul class="list-unstyled">
                                <li>

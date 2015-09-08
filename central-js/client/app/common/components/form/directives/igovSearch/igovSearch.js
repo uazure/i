@@ -3,20 +3,8 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
   var directive = {
     restrict: 'E',
     scope: {},
-    /*
-    scope: {
-      catalog: '=',
-      regionList: '@',
-      localityList: '@',
-      sSearch: '@',
-      spinner: '@',
-      data: '@'
-    },
-    */
     templateUrl: 'app/common/components/form/directives/igovSearch/igovSearch.html',
     link: function($scope, $el, $attr) {
-      console.log('igovSearch scope', $scope, $el, $attr);
-
       var fullCatalog = {};
       $scope.data = {};
       $scope.regionList = new RegionListFactory();
@@ -25,34 +13,25 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
       $scope.operator = -1;
       $scope.selectedStatus = -1;
       $scope.bShowExtSearch = false;
-      $scope.sSearch = null;
       function getIDPlaces() {
-        console.log('getIdPlaces, $scope', $scope);
         return ($scope.bShowExtSearch && $scope.data.region !== null) ?
           [$scope.data.region].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city)
             .map(function(e) { return e.sID_UA; }) : statesRepository.getIDPlaces();
       }
-      $scope.filterByStatus = function(status) {
-        $scope.selectedStatus = status;
-        var ctlg = angular.copy(fullCatalog);
-        angular.forEach(ctlg, function(item) {
-          angular.forEach(item.aSubcategory, function(subItem) {
-            subItem.aService = $filter('filter')(subItem.aService, {nStatus: status});
-          });
-        });
-
-        $scope.recalcCounts = false;
+      function updateCatalog(ctlg) {
         $scope.catalog = ctlg;
-      };
+        eventListService.publish('catalog:update', ctlg);
+      }
       $scope.search = function() {
         $scope.spinner = true;
+        eventListService.publish('catalog:updatePending');
         $scope.catalog = [];
         return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch).then(function (result) {
           fullCatalog = result;
           if ($scope.bShowExtSearch) {
             $scope.filterByExtSearch();
           } else {
-            $scope.catalog = angular.copy(fullCatalog);
+            updateCatalog(angular.copy(fullCatalog));
           }
         });
       };
@@ -71,9 +50,10 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
               subItem.aService = $filter('filter')(subItem.aService, filterCriteria);
             });
           });
-          $scope.catalog = ctlg;
+          updateCatalog(ctlg);
         }
       };
+
       $scope.onExtSearchClick = function() {
         $scope.bShowExtSearch = !$scope.bShowExtSearch;
         if ($scope.operator != -1 || $scope.selectedStatus != -1 || $scope.data.region != null)
@@ -102,10 +82,6 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
         $scope.localityList.select($item, $model, $label);
         $scope.search();
       };
-      $scope.$watch('catalog', function(newValue) {
-        console.log('catalog changed, newValue', newValue);
-        eventListService.publish('catalog:update', newValue);
-      })
       $scope.search();
     }
 

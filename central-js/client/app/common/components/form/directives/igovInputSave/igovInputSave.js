@@ -2,8 +2,10 @@ angular.module('app').directive("igovInputSave", ['userInputSaveService', functi
   var directive = {
     restrict: 'A',
     link: function($scope, $el, $attr) {
-      $scope.$watch($attr.ngModel, function() {
-        userInputSaveService.save($scope[$attr.ngModel]);
+      $scope.$watch($attr.ngModel, function(newValue) {
+        if (newValue) {
+          userInputSaveService.save($scope[$attr.ngModel]);  
+        }
       })
     }
   };

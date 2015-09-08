@@ -9,7 +9,7 @@
         <div class="row">
             <h3 class="subcategory_title">{{category.sName}}: {{subcategory.sName}}</h3>
         </div>
-
+        {{ subcategory.aService.length }}
         <div class="col-md-4" ng-repeat="service in subcategory.aService | orderBy: '-nSub' ">
             <ul class="list-unstyled">
                                <li>

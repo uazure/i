@@ -27,11 +27,23 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
       $scope.bShowExtSearch = false;
       $scope.sSearch = null;
       function getIDPlaces() {
-        console.log('getIdPlaces');
-        return ($scope.bShowExtSearch && $scope.selectedStatus == 2 && $scope.data.region !== null) ?
+        console.log('getIdPlaces, $scope', $scope);
+        return ($scope.bShowExtSearch && $scope.data.region !== null) ?
           [$scope.data.region].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city)
             .map(function(e) { return e.sID_UA; }) : statesRepository.getIDPlaces();
       }
+      $scope.filterByStatus = function(status) {
+        $scope.selectedStatus = status;
+        var ctlg = angular.copy(fullCatalog);
+        angular.forEach(ctlg, function(item) {
+          angular.forEach(item.aSubcategory, function(subItem) {
+            subItem.aService = $filter('filter')(subItem.aService, {nStatus: status});
+          });
+        });
+
+        $scope.recalcCounts = false;
+        $scope.catalog = ctlg;
+      };
       $scope.search = function() {
         $scope.spinner = true;
         $scope.catalog = [];
@@ -91,6 +103,7 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
         $scope.search();
       };
       $scope.$watch('catalog', function(newValue) {
+        console.log('catalog changed, newValue', newValue);
         eventListService.publish('catalog:update', newValue);
       })
       $scope.search();

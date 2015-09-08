@@ -11,6 +11,7 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
   var subscriptions = [];
   var subscriberId = eventListService.subscribe('catalog:update', function(data) {
     $scope.spinner = false;
+    $scope.fullCatalog = data;
     $scope.catalog = data;
     // TODO: move other handlers here, like update counters, etc
   }, false);
@@ -25,7 +26,19 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
     subscriptions.forEach(function(item) {
       eventListService.unsubscribe(item);
     });
-  })
+  });
+
+  $scope.filterByStatus = function(status) {
+    $scope.selectedStatus = status;
+    var ctlg = angular.copy($scope.fullCatalog);
+    angular.forEach(ctlg, function(item) {
+      angular.forEach(item.aSubcategory, function(subItem) {
+        subItem.aService = $filter('filter')(subItem.aService, {nStatus: status});
+      });
+    });
+    $scope.catalog = ctlg;
+  }
+
 
 //TODO: move this code to eventList event handler
   $scope.$watch('catalog', function(newValue) {

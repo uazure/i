@@ -3,6 +3,10 @@ angular.module('app').controller('SubcategoryController', function($scope, $stat
 
   $scope.category = $filter('filter')(catalog, {nID: $stateParams.catID})[0];
   $scope.subcategory = $filter('filter')($scope.category.aSubcategory, {nID: $stateParams.scatID})[0];
+  $scope.sSearch = '';
+  $scope.search = function(text) {
+    console.log('search for', text);
+  }
 
   // Scroll to the top of the section - issues/589
   // After Angular upgrade (current version which is used is 1.3.15),

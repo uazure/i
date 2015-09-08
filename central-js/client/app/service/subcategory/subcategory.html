@@ -3,6 +3,16 @@
         <div class="row">
             <h3 class="subcategory_title">{{category.sName}}: {{subcategory.sName}}</h3>
         </div>
+        <div class="row">
+          <input ng-model="sSearch"
+                 ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
+                 ng-change="search()"
+                 igov-input-save
+                 igov-input-restore
+                 type="text"
+                 class="form-control input-lg"
+                 placeholder="Пошук послуги">
+        </div>
         <div class="col-md-4" ng-repeat="service in subcategory.aService | orderBy: '-nSub' ">
             <ul class="list-unstyled">
                                <li>

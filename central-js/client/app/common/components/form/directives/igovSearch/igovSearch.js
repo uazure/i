@@ -39,6 +39,10 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
           }
         });
       };
+      $scope.clear = function() {
+        $scope.sSearch = '';
+        $scope.search();
+      }
       $scope.filterByExtSearch = function() {
         if ($scope.bShowExtSearch) {
           var filterCriteria = {};

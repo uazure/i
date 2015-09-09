@@ -44,22 +44,21 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
         $scope.search();
       }
       $scope.filterByExtSearch = function() {
-        if ($scope.bShowExtSearch) {
-          var filterCriteria = {};
-          if ($scope.selectedStatus != -1) {
-            filterCriteria.nStatus = $scope.selectedStatus;
-          }
-          if ($scope.operator != -1) {
-            filterCriteria.sSubjectOperatorName = $scope.operator;
-          }
-          var ctlg = angular.copy(fullCatalog);
-          angular.forEach(ctlg, function(item) {
-            angular.forEach(item.aSubcategory, function(subItem) {
-              subItem.aService = $filter('filter')(subItem.aService, filterCriteria);
-            });
-          });
-          updateCatalog(ctlg);
+        var filterCriteria = {};
+        if ($scope.selectedStatus != -1) {
+          filterCriteria.nStatus = $scope.selectedStatus;
         }
+        if ($scope.operator != -1) {
+          filterCriteria.sSubjectOperatorName = $scope.operator;
+        }
+        var ctlg = angular.copy(fullCatalog);
+        angular.forEach(ctlg, function(item) {
+          angular.forEach(item.aSubcategory, function(subItem) {
+            subItem.aService = $filter('filter')(subItem.aService, filterCriteria);
+          });
+        });
+        // check this code to return minimized catalog (without empty sections)
+        updateCatalog(ctlg);
       };
 
       $scope.onExtSearchClick = function() {

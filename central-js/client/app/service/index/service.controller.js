@@ -13,6 +13,7 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
     $scope.spinner = false;
     $scope.fullCatalog = data;
     $scope.catalog = data;
+    console.log('new catalog', $scope.catalog);
     // TODO: move other handlers here, like update counters, etc
     $scope.catalogCounts = CatalogService.getCatalogCounts(data);
   }, false);

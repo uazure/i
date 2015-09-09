@@ -11,6 +11,7 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
       $scope.regionList.load(null, null);
       $scope.localityList = new LocalityListFactory();
       $scope.operator = -1;
+      $scope.operators = [];
       $scope.selectedStatus = -1;
       $scope.bShowExtSearch = false;
       function getIDPlaces() {
@@ -20,6 +21,9 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
       }
       function updateCatalog(ctlg) {
         $scope.catalog = ctlg;
+        if ($scope.operator == -1) {
+          $scope.operators = CatalogService.getOperators(ctlg);
+        }
         eventListService.publish('catalog:update', ctlg);
       }
       $scope.search = function() {

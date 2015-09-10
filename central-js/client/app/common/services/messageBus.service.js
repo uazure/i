@@ -1,6 +1,6 @@
-angular.module('app').service('eventListService', function() {
+angular.module('app').service('messageBusService', function() {
 
-  var EventList = {
+  var MessageBus = {
         debug : false, //Set to true to view console logs
         log : function() {// wrapper for smart calling of console.log
           if (this.debug === true) {
@@ -10,7 +10,6 @@ angular.module('app').service('eventListService', function() {
         },
         topics : {}, //Object where all event listener topics will be stored
         subscribers: {},
-        topicState : {}, // Object where topicState is stored
         // Helper function to get unique id.
         // Origin: https://gist.github.com/gordonbrander/2230317
         generateId: function() {
@@ -19,7 +18,7 @@ angular.module('app').service('eventListService', function() {
           // after the decimal.
           return '_' + Math.random().toString(36).substr(2, 9);
         },
-        subscribe : function(topic, listener, noInit) {
+        subscribe : function(topic, listener) {
           // Create the topic if it has not yet been created
           if (!this.topics[topic]) {
             this.topics[topic] = [];
@@ -30,26 +29,17 @@ angular.module('app').service('eventListService', function() {
           // Remember listener in subscribers
           var subscriberId = this.generateId();
           this.subscribers[subscriberId] = {listener: listener, topic: topic};
-          // publish current state immediately
-          if (Boolean(noInit) == false) {
-            if ( typeof (this.topicState[topic]) != 'undefined' && topic != '*') {
-              listener(this.topicState[topic]);
-            } else if (topic == '*') {
-              listener(this.topicState);
-            }
-          }
+
           return subscriberId;
         },
         publish : function(topic, data) {
           var self = this;
-          //Save topic state
-          this.topicState[topic] = data;
           // Broadcast event to '*' subscribers
           if (this.topics['*']) {
             this.log('BROADCASTING EVENT', this.topics['*']);
             this.topics['*'].forEach(function(listener) {
-              if ( typeof listener === 'function') {
-                listener(self.topicState);
+              if ( typeof (listener) === 'function') {
+                listener(data);
               }
             });
           }
@@ -101,13 +91,7 @@ angular.module('app').service('eventListService', function() {
           for (var key in this.topics) {
             this.remove(key);
           }
-        },
-        setState : function(state) {
-          this.log('SETTING INITIAL STATE');
-          for (var key in state) {
-            this.publish(key, state[key]);
-          }
         }
       };
-      return EventList;
+      return MessageBus;
 });

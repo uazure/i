@@ -1,5 +1,5 @@
-angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'eventListService',
-    function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, eventListService) {
+angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService',
+    function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService) {
 
   $scope.catalog = [];
   $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
@@ -9,7 +9,7 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
   $scope.spinner = true;
 
   var subscriptions = [];
-  var subscriberId = eventListService.subscribe('catalog:update', function(data) {
+  var subscriberId = messageBusService.subscribe('catalog:update', function(data) {
     $scope.spinner = false;
     $scope.fullCatalog = data;
     $scope.catalog = data;
@@ -20,14 +20,14 @@ angular.module('app').controller('ServiceController', ['$scope', '$rootScope', '
   subscriptions.push(subscriberId);
 
 
-  subscriberId = eventListService.subscribe('catalog:updatePending', function() {
+  subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
     $scope.spinner = true;
     $scope.catalog = [];
   });
   subscriptions.push(subscriberId);
   $scope.$on('$destroy', function() {
     subscriptions.forEach(function(item) {
-      eventListService.unsubscribe(item);
+      messageBusService.unsubscribe(item);
     });
   });
 

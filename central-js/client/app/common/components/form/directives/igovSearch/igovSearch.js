@@ -1,5 +1,5 @@
-angular.module('app').directive("igovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'eventListService',
- function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, eventListService) {
+angular.module('app').directive("igovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService',
+ function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService) {
   var directive = {
     restrict: 'E',
     scope: {},
@@ -32,11 +32,11 @@ angular.module('app').directive("igovSearch", ['CatalogService', 'statesReposito
         if ($scope.operator == -1) {
           $scope.operators = CatalogService.getOperators(ctlg);
         }
-        eventListService.publish('catalog:update', ctlg);
+        messageBusService.publish('catalog:update', ctlg);
       }
       $scope.search = function() {
         $scope.spinner = true;
-        eventListService.publish('catalog:updatePending');
+        messageBusService.publish('catalog:updatePending');
         $scope.catalog = [];
         return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch).then(function (result) {
           fullCatalog = result;

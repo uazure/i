@@ -1,12 +1,12 @@
-angular.module('app').controller('SubcategoryController', ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'eventListService', 'catalog',
-    function($scope, $stateParams, $filter, $location, $anchorScroll, eventListService, catalog) {
+angular.module('app').controller('SubcategoryController', ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'catalog',
+    function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, catalog) {
   var category = $filter('filter')(catalog, {nID: $stateParams.catID})[0];
   var subcategory = $filter('filter')(category.aSubcategory, {nID: $stateParams.scatID})[0];
   $scope.categoryName = category.sName;
   $scope.subcategoryName = subcategory.sName;
   $scope.spinner = true;
   var subscribers = [];
-  var subscriberId = eventListService.subscribe('catalog:updatePending', function() {
+  var subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
     console.log("spinner true");
     $scope.spinner = true;
     $scope.catalog = [];
@@ -14,7 +14,7 @@ angular.module('app').controller('SubcategoryController', ['$scope', '$statePara
     $scope.subcategory = null;
   });
   subscribers.push(subscriberId);
-  subscriberId = eventListService.subscribe('catalog:update', function(data) {
+  subscriberId = messageBusService.subscribe('catalog:update', function(data) {
     console.log('catalog updated, will update items');
     $scope.spinner = false;
     $scope.catalog = data;
@@ -34,7 +34,7 @@ angular.module('app').controller('SubcategoryController', ['$scope', '$statePara
   $scope.subcategory = null;
   $scope.$on('$destroy', function() {
     subscribers.forEach(function(subscriberId) {
-      eventListService.unsubscribe(subscriberId);
+      messageBusService.unsubscribe(subscriberId);
     });
   })
 

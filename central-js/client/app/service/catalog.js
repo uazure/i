@@ -14,7 +14,6 @@ angular.module('app').service('CatalogService', ['$http', function ($http) {
       data: data
     }).then(function (response) {
       servicesCache = response.data;
-      //console.log('servicesCache', servicesCache);
       return response.data;
     });
   };
@@ -28,14 +27,13 @@ angular.module('app').service('CatalogService', ['$http', function ($http) {
       data: data
     }).then(function (response) {
       servicesCache = response.data;
-      //console.log('servicesCache', servicesCache);
       return response.data;
     });
   };
 
   this.getCatalogCounts = function(catalog) {
     var catalogCounts = {'0': 0, '1': 0, '2': 0};
-    if (typeof(catalog) == 'undefined') {
+    if (catalog === undefined) {
       catalog = servicesCache;
     }
 
@@ -48,24 +46,12 @@ angular.module('app').service('CatalogService', ['$http', function ($http) {
           ++catalogCounts[aServiceItem.nStatus];
         });
       });
-      /*
-      if (category.aSubcategory) {
-        category.aSubcategory = jQuery.grep(category.aSubcategory, function(sc) {
-          return sc.aService.length > 0;
-        });
-
-        if (category.aSubcategory.length == 0) {
-          category.sName = "";
-        }
-      }
-      */
     });
     return catalogCounts;
   };
   this.getOperators = function(catalog) {
-    console.log('getOperators');
     var operators = [];
-    if (typeof(catalog) == 'undefined') {
+    if (catalog === undefined) {
       catalog = servicesCache;
     }
     angular.forEach(catalog, function(category) {

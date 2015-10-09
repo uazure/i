@@ -1,7 +1,7 @@
-<p ng-if="item.type == 'file' && !isFormPropertyDisabled(item)">
+<p ng-if="item.type == 'file' && !isFormPropertyDisabled">
               <field-title></field-title>
               <file-field name="{{item.id}}"
-                          ng-disabled="isFormPropertyDisabled(item)"
+                          ng-disabled="isFormPropertyDisabled"
                           ng-model="item.value"
                           ng-required="property.required">Add File
               </file-field>

@@ -1,0 +1,26 @@
+<div ng-if="['string', 'long', 'date', 'label'].indexOf(item.type) > -1">
+  <field-title></field-title>
+  <simple-field></simple-field>
+</div>
+
+<textarea-field></textarea-field>
+
+<user-field></user-field>
+
+<enum-field></enum-field>
+
+<file-formfield></file-formfield>
+
+<p style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
+  <field-title></field-title>
+</p>
+
+<p ng-if="['label'].indexOf(item.type) > -1">
+  <field-title></field-title>
+  <label>{{item.value}}</label>
+</p>
+
+<p ng-if="['queueData'].indexOf(item.type) > -1">
+  <field-title></field-title>
+  <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
+</p>

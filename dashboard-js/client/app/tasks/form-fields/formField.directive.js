@@ -11,10 +11,6 @@ angular.module('dashboardJsApp').directive('formField', function() {
       $scope.isFormPropertyDisabled = isFormPropertyDisabled(item);
       $scope.sFieldLabel = sFieldLabel(item.name);
 
-      
-
-
-
       function isCommentAfterReject(item) {
         if (item.id != "comment") {
           return false;
@@ -41,6 +37,9 @@ angular.module('dashboardJsApp').directive('formField', function() {
 
       function isFormPropertyDisabled(item) {
         // FIXME: check this logic
+        if (!item.writable) {
+          return true;
+        }
         if ($scope.selectedTask && $scope.selectedTask.assignee === null) {
           return true;
         } else if ($scope.selectedTask && $scope.selectedTask.assignee !== null && !item) {
@@ -51,18 +50,7 @@ angular.module('dashboardJsApp').directive('formField', function() {
         return false;
       };
 
-      $scope.sDate_FieldQueueData = function (sValue) {
-      var nAt = sValue.indexOf("sDate");
-      var nTo = sValue.indexOf("}");
-      var s = sValue.substring(nAt + 5 + 1 + 1, nTo - 1 - 6);
-      var sDate = "Дата назначена!";
-      try {
-        sDate = s;
-      } catch (_) {
-        sDate = "Дата назначена!";
-      }
-      return sDate;
-      };
+
     }
   };
 });

@@ -1,9 +1,10 @@
 <div class="input-group">
-  <input class="form-control" 
+  <input class="form-control hidden-print" 
     ng-disabled="isFormPropertyDisabled"
     ng-required="isRequired"
     ng-model="item.value"
   />
+  <span class="visible-print-inline">{{ item.value }}</span>
   <span class="input-group-addon" 
     ng-if="isFormPropertyDisabled"
     clip-copy="item.value">

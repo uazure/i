@@ -10,10 +10,7 @@
       <p>від: {{ sDateShort(selectedTask.createTime) }}</p>
 
       <p ng-repeat='item in taskForm'>
-      {{item.value}}
-        <font ng-if="item.type != 'invisible'">{{sFieldLabel}}</font>
-        <b ng-if="item.type == 'enum'">{{sEnumValue(item.enumValues,item.value)}}</b>
-        <b ng-if="item.type != 'enum' && item.type != 'invisible'">{{item.value}}</b>
+        <form-field></form-field>
       </p>
 
       <hr/>
